@@ -15,8 +15,10 @@ export default function Home() {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      const today = new Date()
-      const arrivalDateTime = new Date(today.toDateString() + ' ' + arrivalTime)
+      // Parse the time input properly (HH:MM format)
+      const [hours, minutes] = arrivalTime.split(':').map(Number)
+      const arrivalDateTime = new Date()
+      arrivalDateTime.setHours(hours, minutes, 0, 0)
       
       const response = await fetch('https://workflowly.online/webhook/arriveby', {
         method: 'POST',
