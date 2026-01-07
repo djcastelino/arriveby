@@ -20,6 +20,12 @@ export default function Home() {
       const arrivalDateTime = new Date()
       arrivalDateTime.setHours(hours, minutes, 0, 0)
       
+      // If the time is in the past, assume tomorrow
+      const now = new Date()
+      if (arrivalDateTime < now) {
+        arrivalDateTime.setDate(arrivalDateTime.getDate() + 1)
+      }
+      
       const response = await fetch('https://workflowly.online/webhook/arriveby', {
         method: 'POST',
         headers: { 'Content-Type': 'application/json' },
