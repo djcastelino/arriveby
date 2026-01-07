@@ -15,24 +15,22 @@ export default function Home() {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      // Get current date in EST
+      // Get current date in EST for tomorrow
       const now = new Date()
+      const tomorrow = new Date(now.getTime() + 24 * 60 * 60 * 1000)
       const estFormatter = new Intl.DateTimeFormat('en-US', {
         timeZone: 'America/New_York',
         year: 'numeric',
         month: '2-digit',
         day: '2-digit'
       })
-      const estDateParts = estFormatter.formatToParts(now)
+      const estDateParts = estFormatter.formatToParts(tomorrow)
       const year = estDateParts.find(p => p.type === 'year')!.value
       const month = estDateParts.find(p => p.type === 'month')!.value
       const day = estDateParts.find(p => p.type === 'day')!.value
       
-      // Parse the time input (HH:mm format)
-      const [hours, minutes] = arrivalTime.split(':').map(Number)
-      
-      // Create ISO string in EST timezone format (YYYY-MM-DDTHH:mm:ss-05:00)
-      const isoDate = `${year}-${month}-${day}T${arrivalTime}:00-05:00`
+      // Create ISO string without timezone (n8n will handle as local time)
+      const isoDate = `${year}-${month}-${day}T${arrivalTime}:00`
       
       const response = await fetch('https://workflowly.online/webhook/arriveby', {
         method: 'POST',
