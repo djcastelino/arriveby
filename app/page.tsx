@@ -15,22 +15,24 @@ export default function Home() {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      // Get current date/time in EST timezone
+      // Get current date in EST
       const now = new Date()
-      const estOptions = { timeZone: 'America/New_York', year: 'numeric', month: '2-digit', day: '2-digit' } as const
-      const estDate = new Date(now.toLocaleString('en-US', { timeZone: 'America/New_York' }))
+      const estFormatter = new Intl.DateTimeFormat('en-US', {
+        timeZone: 'America/New_York',
+        year: 'numeric',
+        month: '2-digit',
+        day: '2-digit'
+      })
+      const estDateParts = estFormatter.formatToParts(now)
+      const year = estDateParts.find(p => p.type === 'year')!.value
+      const month = estDateParts.find(p => p.type === 'month')!.value
+      const day = estDateParts.find(p => p.type === 'day')!.value
       
       // Parse the time input (HH:mm format)
       const [hours, minutes] = arrivalTime.split(':').map(Number)
       
-      // Create arrival datetime in EST
-      const arrivalDateTime = new Date(estDate)
-      arrivalDateTime.setHours(hours, minutes, 0, 0)
-      
-      // If the time is in the past, assume tomorrow
-      if (arrivalDateTime < now) {
-        arrivalDateTime.setDate(arrivalDateTime.getDate() + 1)
-      }
+      // Create ISO string in EST timezone format (YYYY-MM-DDTHH:mm:ss-05:00)
+      const isoDate = `${year}-${month}-${day}T${arrivalTime}:00-05:00`
       
       const response = await fetch('https://workflowly.online/webhook/arriveby', {
         method: 'POST',
@@ -38,7 +40,7 @@ export default function Home() {
         body: JSON.stringify({
           origin,
           destination,
-          arrivalTime: arrivalDateTime.toISOString(),
+          arrivalTime: isoDate,
           bufferMinutes: 15
         })
       })
