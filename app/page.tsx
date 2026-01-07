@@ -143,10 +143,10 @@ export default function Home() {
               </CardHeader>
               <CardContent>
                 <div className="text-5xl font-bold mb-2">
-                  {recommendation.departureTime || 'N/A'}
+                  {recommendation.recommendation?.departureTime || 'N/A'}
                 </div>
-                <p className="text-blue-100">
-                  {recommendation.urgencyMessage || 'Leave soon to arrive on time'}
+                <p className="text-blue-100 text-lg mt-4">
+                  {recommendation.recommendation?.message || 'Leave soon to arrive on time'}
                 </p>
               </CardContent>
             </Card>
@@ -157,7 +157,7 @@ export default function Home() {
                 <CardContent className="pt-6">
                   <div className="text-sm text-gray-600 mb-1">Distance</div>
                   <div className="text-2xl font-bold text-gray-900">
-                    {recommendation.distance || 'N/A'}
+                    {recommendation.details?.route?.distance || 'N/A'}
                   </div>
                 </CardContent>
               </Card>
@@ -166,7 +166,7 @@ export default function Home() {
                 <CardContent className="pt-6">
                   <div className="text-sm text-gray-600 mb-1">Travel Time</div>
                   <div className="text-2xl font-bold text-gray-900">
-                    {recommendation.duration || 'N/A'}
+                    {recommendation.details?.route?.duration || 'N/A'}
                   </div>
                 </CardContent>
               </Card>
@@ -210,15 +210,15 @@ export default function Home() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Temperature</span>
-                      <span className="font-semibold">{recommendation.weather?.temperature || 'N/A'}</span>
+                      <span className="font-semibold">{recommendation.details?.weather?.temperature || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Conditions</span>
-                      <span className="font-semibold">{recommendation.weather?.conditions || 'N/A'}</span>
+                      <span className="font-semibold">{recommendation.details?.weather?.conditions || 'N/A'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Precipitation</span>
-                      <span className="font-semibold">{recommendation.weather?.precipChance || 'N/A'}</span>
+                      <span className="font-semibold">{recommendation.details?.weather?.precipChance || 'N/A'}</span>
                     </div>
                   </div>
                 </CardContent>
@@ -236,20 +236,16 @@ export default function Home() {
                   <div className="space-y-2 text-sm">
                     <div className="flex justify-between">
                       <span className="text-gray-600">Total Incidents</span>
-                      <span className="font-semibold">{recommendation.traffic?.totalIncidents || '0'}</span>
+                      <span className="font-semibold">{recommendation.details?.traffic?.incidents || '0'}</span>
                     </div>
                     <div className="flex justify-between">
                       <span className="text-gray-600">Construction Zones</span>
-                      <span className="font-semibold">{recommendation.traffic?.constructionZones || '0'}</span>
+                      <span className="font-semibold">{recommendation.details?.traffic?.construction || '0'}</span>
                     </div>
                     <div className="flex justify-between">
-                      <span className="text-gray-600">Impact</span>
-                      <span className={`font-semibold ${
-                        recommendation.traffic?.trafficImpact === 'high' ? 'text-red-600' :
-                        recommendation.traffic?.trafficImpact === 'medium' ? 'text-orange-600' :
-                        'text-green-600'
-                      }`}>
-                        {recommendation.traffic?.trafficImpact?.toUpperCase() || 'LOW'}
+                      <span className="text-gray-600">Details</span>
+                      <span className="font-semibold text-green-600">
+                        {recommendation.details?.traffic?.constructionDetails || 'No issues reported'}
                       </span>
                     </div>
                   </div>
