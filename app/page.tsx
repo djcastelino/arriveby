@@ -180,7 +180,7 @@ export default function Home() {
             </div>
 
             {/* AI Insights */}
-            {recommendation.aiAnalysis && (
+            {recommendation.message && (
               <Card className="shadow-lg border-l-4 border-indigo-600">
                 <CardHeader>
                   <CardTitle className="flex items-center gap-2">
@@ -190,7 +190,7 @@ export default function Home() {
                 </CardHeader>
                 <CardContent>
                   <p className="text-gray-700 leading-relaxed whitespace-pre-line">
-                    {recommendation.aiAnalysis}
+                    {recommendation.message}
                   </p>
                 </CardContent>
               </Card>
