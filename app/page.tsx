@@ -15,10 +15,12 @@ export default function Home() {
   const handleSubmit = async () => {
     setLoading(true)
     try {
-      // Parse the time input properly (HH:MM format)
-      const [hours, minutes] = arrivalTime.split(':').map(Number)
-      const arrivalDateTime = new Date()
-      arrivalDateTime.setHours(hours, minutes, 0, 0)
+      // Get today's date in EST timezone
+      const today = new Date().toLocaleDateString('en-US', { timeZone: 'America/New_York' })
+      
+      // Combine today's date with the user's input time
+      const arrivalDateTimeString = `${today} ${arrivalTime}`
+      const arrivalDateTime = new Date(arrivalDateTimeString)
       
       // If the time is in the past, assume tomorrow
       const now = new Date()
