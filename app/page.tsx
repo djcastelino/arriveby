@@ -25,7 +25,10 @@ export default function Home() {
       
       // Create arrival datetime in EST
       const arrivalDateTime = new Date(estDate)
-      arrivalDateTime.setHours(hours, minutes, 0, 0)
+      const [hourStr, minuteStr] = arriveBy.split(':')
+      const hours24 = parseInt(hourStr)
+      const mins = parseInt(minuteStr)
+      arrivalDateTime.setHours(hours24, mins, 0, 0)
       
       // If the time is in the past, assume tomorrow
       if (arrivalDateTime < now) {
